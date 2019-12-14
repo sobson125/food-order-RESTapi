@@ -1,8 +1,7 @@
 package com.example.foodorderrestapi.Dishes;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -10,13 +9,25 @@ import java.util.List;
 @RequestMapping("/api/dishes")
 public class DishController {
 
+    private DishService dishService;
+
+    @Autowired
+    public DishController(DishService dishService) {
+        this.dishService = dishService;
+    }
 
     @GetMapping
-    public List<Dish> getDishes() {
-        return List.of(
-                new Dish("1", "pizza", 20f),
-                new Dish("2", "spaghetti", 20f),
-                new Dish("3", "cheeseburger", 20f)
-        );
+    public List<Dish> getAllDishes() {
+        return dishService.getAllDishes();
+    }
+
+    @GetMapping("/{id}")
+    public Dish getDish(@PathVariable String id){
+        return dishService.getDishById(id);
+    }
+
+    @PostMapping
+    public void addDish(@RequestBody Dish dish){
+        dishService.addDish(dish);
     }
 }
