@@ -22,12 +22,22 @@ public class DishController {
     }
 
     @GetMapping("/{id}")
-    public Dish getDish(@PathVariable String id){
+    public Dish getDish(@PathVariable String id) {
         return dishService.getDishById(id);
     }
 
     @PostMapping
-    public void addDish(@RequestBody Dish dish){
+    public void addDish(@RequestBody Dish dish) {
         dishService.addDish(dish);
+    }
+
+    @PutMapping("/{id}")
+    public void updateDish(@PathVariable String id, @RequestBody Dish dish) {
+        dishService.updateDish(id, dish);
+    }
+
+    @DeleteMapping("/{id}")
+    public void updateDish(@PathVariable String id) {
+        dishService.deleteDish(id);
     }
 }
