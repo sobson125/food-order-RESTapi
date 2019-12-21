@@ -1,47 +1,40 @@
 package com.example.foodorderrestapi.Dishes;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class DishService {
 
-    private List<Dish> dishes = Stream.of(
-            new Dish("1", "pizza", 20f),
-            new Dish("2", "spaghetti", 20f),
-            new Dish("3", "cheeseburger", 20f))
-            .collect(Collectors.toList());
+    private DishRepository dishRepository;
 
-
-    public List<Dish> getAllDishes() {
-        return dishes;
+    @Autowired
+    public DishService(DishRepository dishRepository) {
+        this.dishRepository = dishRepository;
     }
 
-    public Dish getDishById(String id) {
-        return getDishStream(id)
-                .findFirst()
-                .get();
+    public List<Dish> getAllDishes(Long id) {
+        return dishRepository.findDishesByOrderId(id);
     }
 
-    private Stream<Dish> getDishStream(String id) {
-        return dishes.stream()
-                .filter(dish -> dish.getId().equals(id));
+    public Dish getDishById(Long id) {
+        return dishRepository.findById(id).get();
     }
 
-    public void addDish(Dish dish) {
-        dishes.add(dish);
+    public void addDish(CreateDishRequest dishRequest) {
+        Dish dish = new Dish();
+        dish.setName(dishRequest.getName());
+        dish.setPrice(dishRequest.getPrice());
+        dishRepository.save(dish);
     }
 
-    public void updateDish(String id, Dish newDish) {
-        dishes.stream()
-                .filter(oldDish -> oldDish.getId().equals(id))
-                .forEach(oldDish -> dishes.set(dishes.indexOf(oldDish), newDish));
+    public void updateDish(Long id, Dish newDish) {
+        dishRepository.save(newDish);
     }
 
-    public void deleteDish(String id) {
-        dishes.removeIf(dish -> dish.getId().equals(id));
+    public void deleteDish(Long id) {
+        dishRepository.deleteById(id);
     }
 }

@@ -5,8 +5,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/api/dishes")
+@RestController(value = "api/orders")
 public class DishController {
 
     private DishService dishService;
@@ -16,28 +15,29 @@ public class DishController {
         this.dishService = dishService;
     }
 
-    @GetMapping
-    public List<Dish> getAllDishes() {
-        return dishService.getAllDishes();
+    @GetMapping(value = "/{orderId}/dishes")
+    public List<Dish> getAllDishes(@PathVariable Long orderId) {
+        return dishService.getAllDishes(orderId);
     }
 
-    @GetMapping("/{id}")
-    public Dish getDish(@PathVariable String id) {
+
+    @GetMapping("/{orderid}/dishes/{id}")
+    public Dish getDish(@PathVariable Long id) {
         return dishService.getDishById(id);
     }
 
-    @PostMapping
-    public void addDish(@RequestBody Dish dish) {
-        dishService.addDish(dish);
+    @PostMapping("/api/orders/{orderid}/dishes")
+    public void addDish(@PathVariable Long orderid, @RequestBody CreateDishRequest dishRequest) {
+        dishService.addDish(dishRequest);
     }
 
-    @PutMapping("/{id}")
-    public void updateDish(@PathVariable String id, @RequestBody Dish dish) {
+    @PutMapping("/{orderid}/dishes/{id}")
+    public void updateDish(@PathVariable Long id, @RequestBody Dish dish) {
         dishService.updateDish(id, dish);
     }
 
     @DeleteMapping("/{id}")
-    public void updateDish(@PathVariable String id) {
+    public void updateDish(@PathVariable Long id) {
         dishService.deleteDish(id);
     }
 }
