@@ -5,7 +5,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController(value = "api/orders")
+@RestController
+@RequestMapping("/api/orders/{orderid}")
 public class DishController {
 
     private DishService dishService;
@@ -15,20 +16,20 @@ public class DishController {
         this.dishService = dishService;
     }
 
-    @GetMapping(value = "/{orderId}/dishes")
+    @GetMapping(value = "/dishes")
     public List<Dish> getAllDishes(@PathVariable Long orderId) {
         return dishService.getAllDishes(orderId);
     }
 
 
-    @GetMapping("/{orderid}/dishes/{id}")
+    @GetMapping("/dishes/{id}")
     public Dish getDish(@PathVariable Long id) {
         return dishService.getDishById(id);
     }
 
-    @PostMapping("/api/orders/{orderid}/dishes")
+    @PostMapping("/dishes")
     public void addDish(@PathVariable Long orderid, @RequestBody CreateDishRequest dishRequest) {
-        dishService.addDish(dishRequest);
+        dishService.addDish(dishRequest, orderid);
     }
 
     @PutMapping("/{orderid}/dishes/{id}")

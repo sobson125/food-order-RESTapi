@@ -1,5 +1,6 @@
 package com.example.foodorderrestapi.Dishes;
 
+import com.example.foodorderrestapi.Orders.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,10 +24,13 @@ public class DishService {
         return dishRepository.findById(id).get();
     }
 
-    public void addDish(CreateDishRequest dishRequest) {
+    public void addDish(CreateDishRequest dishRequest, long orderId) {
         Dish dish = new Dish();
         dish.setName(dishRequest.getName());
         dish.setPrice(dishRequest.getPrice());
+        Order order = new Order();
+        order.setId(orderId);
+        dish.setOrder(order);
         dishRepository.save(dish);
     }
 
