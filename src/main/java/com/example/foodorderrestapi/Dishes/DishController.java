@@ -1,5 +1,6 @@
 package com.example.foodorderrestapi.Dishes;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -7,6 +8,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/orders/{orderid}")
+@Slf4j
 public class DishController {
 
     private DishService dishService;
@@ -16,14 +18,16 @@ public class DishController {
         this.dishService = dishService;
     }
 
-    @GetMapping(value = "/dishes")
-    public List<Dish> getAllDishes(@PathVariable Long orderId) {
-        return dishService.getAllDishes(orderId);
+    @GetMapping("/dishes")
+    public List<Dish> getAllDishes(@PathVariable Long orderid) {
+        log.info("printing all dishes in orders with id: {}", orderid);
+        return dishService.getAllDishes(orderid);
     }
 
 
     @GetMapping("/dishes/{id}")
-    public Dish getDish(@PathVariable Long id) {
+    public Dish getDish(@PathVariable Long id, @PathVariable Long orderid) {
+        log.info("printing dish with id: {} in orders with id: {}", id, orderid);
         return dishService.getDishById(id);
     }
 
@@ -32,12 +36,12 @@ public class DishController {
         dishService.addDish(dishRequest, orderid);
     }
 
-    @PutMapping("/{orderid}/dishes/{id}")
-    public void updateDish(@PathVariable Long id, @RequestBody Dish dish) {
-        dishService.updateDish(id, dish);
+    @PutMapping("/dishes/{id}")
+    public void updateDish(@PathVariable Long id, @RequestBody UpdateDishRequest dishRequest) {
+        dishService.updateDish(id, dishRequest.getName(), dishRequest.getPrice());
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/dishes/{id}")
     public void updateDish(@PathVariable Long id) {
         dishService.deleteDish(id);
     }

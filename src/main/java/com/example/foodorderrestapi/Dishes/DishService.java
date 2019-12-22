@@ -17,7 +17,7 @@ public class DishService {
     }
 
     public List<Dish> getAllDishes(Long id) {
-        return dishRepository.findDishesByOrderId(id);
+        return dishRepository.findByOrderId(id);
     }
 
     public Dish getDishById(Long id) {
@@ -34,8 +34,12 @@ public class DishService {
         dishRepository.save(dish);
     }
 
-    public void updateDish(Long id, Dish newDish) {
-        dishRepository.save(newDish);
+    public void updateDish(Long id, String name, Float price) {
+        Dish dish = getDishById(id);
+        dish.setPrice(price);
+        dish.setName(name);
+        dishRepository.save(dish);
+
     }
 
     public void deleteDish(Long id) {
