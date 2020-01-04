@@ -5,13 +5,13 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 public class OrderService {
 
     private OrderRepository orderRepository;
-    private final AtomicLong nextTaskId = new AtomicLong(0L);
 
     @Autowired
     public OrderService(OrderRepository orderRepository) {
@@ -41,5 +41,12 @@ public class OrderService {
 
     public void deleteOrder(Long id) {
         orderRepository.deleteById(id);
+    }
+
+    public List<Order> getAllOrdersByQuery(String query) {
+        return getAllOrders()
+                .stream()
+                .filter(order -> order.getStreet().contains(query))
+                .collect(toList());
     }
 }

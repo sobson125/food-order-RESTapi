@@ -1,4 +1,4 @@
-package com.example.foodorderrestapi.Dishes;
+package com.example.foodorderrestapi.Dishes.DTO;
 
 import lombok.Data;
 

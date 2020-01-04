@@ -24,10 +24,9 @@ public class DishService {
         return dishRepository.findById(id).get();
     }
 
-    public void addDish(CreateDishRequest dishRequest, long orderId) {
+    public void addDish(String name, Float price, long orderId) {
         Dish dish = new Dish();
-        dish.setName(dishRequest.getName());
-        dish.setPrice(dishRequest.getPrice());
+        setDishProperties(name, price, dish);
         Order order = new Order();
         order.setId(orderId);
         dish.setOrder(order);
@@ -36,13 +35,17 @@ public class DishService {
 
     public void updateDish(Long id, String name, Float price) {
         Dish dish = getDishById(id);
-        dish.setPrice(price);
-        dish.setName(name);
+        setDishProperties(name, price, dish);
         dishRepository.save(dish);
 
     }
 
     public void deleteDish(Long id) {
         dishRepository.deleteById(id);
+    }
+
+    private void setDishProperties(String name, Float price, Dish dish) {
+        dish.setName(name);
+        dish.setPrice(price);
     }
 }

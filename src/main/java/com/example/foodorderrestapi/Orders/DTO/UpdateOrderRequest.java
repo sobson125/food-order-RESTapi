@@ -1,4 +1,4 @@
-package com.example.foodorderrestapi.Orders;
+package com.example.foodorderrestapi.Orders.DTO;
 
 import lombok.Data;
 

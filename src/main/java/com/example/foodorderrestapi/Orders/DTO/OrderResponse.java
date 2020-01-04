@@ -1,23 +1,17 @@
-package com.example.foodorderrestapi.Orders;
+package com.example.foodorderrestapi.Orders.DTO;
 
 import com.example.foodorderrestapi.Dishes.Dish;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
-@Entity
-@Table(name = "Orders")
-
-public class Order {
-
-    @Id
-    @GeneratedValue
+@AllArgsConstructor
+public class OrderResponse {
     private Long id;
     private String street;
     private LocalDateTime localDateTime;
-    @OneToMany(mappedBy = "order")
     private List<Dish> dishes;
 }
